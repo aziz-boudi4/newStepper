@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="FUTRFW.TTF">
+            <string>FuturistFixedWidth-Regular</string>
+        </mutableArray>
+    </customFonts>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="newStepper" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZaA-jC-g8l" userLabel="circleView">
+                                <rect key="frame" x="138" y="284" width="100" height="100"/>
+                                <animations/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="DlW-Iv-huT"/>
+                                    <constraint firstAttribute="height" constant="100" id="O5W-dk-JEY"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aPp-wV-R0b" userLabel="value">
+                                <rect key="frame" x="138" y="314" width="100" height="40"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="5Rl-vY-fL3"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="FuturistFixedWidth-Regular" family="Futurist Fixed-width" pointSize="34"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="aPp-wV-R0b" firstAttribute="centerX" secondItem="ZaA-jC-g8l" secondAttribute="centerX" id="2sk-Fj-TLM"/>
+                            <constraint firstAttribute="centerX" secondItem="ZaA-jC-g8l" secondAttribute="centerX" id="QZm-aJ-brp"/>
+                            <constraint firstItem="aPp-wV-R0b" firstAttribute="centerY" secondItem="ZaA-jC-g8l" secondAttribute="centerY" id="eqd-Af-naw"/>
+                            <constraint firstAttribute="centerY" secondItem="ZaA-jC-g8l" secondAttribute="centerY" id="y93-4r-joN"/>
+                        </constraints>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="circleView" destination="ZaA-jC-g8l" id="OKI-fu-sDP"/>
+                        <outlet property="label" destination="aPp-wV-R0b" id="F7l-RM-g0e"/>
+                        <outlet property="labelYConstraint" destination="y93-4r-joN" id="2IS-3c-VZw"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+    </scenes>
+</document>
