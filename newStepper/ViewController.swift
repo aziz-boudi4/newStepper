@@ -17,7 +17,6 @@ class ViewController: UIViewController {
 
   @IBOutlet weak var circleView: UIView!
 
- 
 
   @IBInspectable var min: Int = 0
   @IBInspectable var max: Int = 20
@@ -67,29 +66,31 @@ class ViewController: UIViewController {
   }
 
   func handleSwipes(sender:UISwipeGestureRecognizer) {
-    var increment: Int
-    var offset: CGFloat
+    var increment: Int = 1
+    var offset: CGFloat = 10
+
 
     // up or down
-    if sender.direction == .Up {
+    if sender.direction == .Down && score == 0  {
+      increment = 0
+      offset = -10
+
+    } else if sender.direction == .Up  {
+
       increment = 1
       offset = 10
-      print(offset)
-//      label.center = CGPoint(x: label.center.x, y: label.center.y + offset)
+      print("offset up :\(offset)")
+      //label.center = CGPoint(x: label.center.x, y: label.center.y + offset)
 
-
-    } else {
+    } else if  sender.direction == .Down  {
       increment = -1
       offset = -10
-      print(offset)
-//      label.center = CGPoint(x: label.center.x, y: label.center.y + offset)
-
+      print("offset down :\(offset)")
+      //label.center = CGPoint(x: label.center.x, y: label.center.y + offset)
 
     }
 
     //let shadowAnimate = CABasicAnimation(keyPath:"shadowOpacity")
-
-
     // animate stuff with constraints
     inc(increment)
 
