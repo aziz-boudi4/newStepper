@@ -59,8 +59,8 @@ class ViewController: UIViewController {
     swipeUp.direction = .Up
     swipeDown.direction = .Down
 
-    view.addGestureRecognizer(swipeUp)
-    view.addGestureRecognizer(swipeDown)
+    circleView.addGestureRecognizer(swipeUp)
+    circleView.addGestureRecognizer(swipeDown)
 
 
   }
