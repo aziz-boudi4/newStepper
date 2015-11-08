@@ -17,7 +17,15 @@ class ViewController: UIViewController {
 
   @IBOutlet weak var circleView: UIView!
 
- 
+  struct Colors {
+    static let jogaGreen = UIColor(
+      red: 167/255.0,
+      green: 246/255.0,
+      blue: 67/255.0,
+      alpha: 1
+    )
+  }
+
 
   @IBInspectable var min: Int = 0
   @IBInspectable var max: Int = 20
@@ -43,11 +51,12 @@ class ViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    label.font = UIFont(name:"Futura-Medium", size: 44.0)
     setupSwipeGestures()
 
     circleView.layer.cornerRadius = CGRectGetHeight(circleView.bounds) / 2.0
     circleView.layer.borderColor = UIColor.lightGrayColor().CGColor
-    circleView.layer.borderWidth = 9.0
+//    circleView.layer.borderWidth = 9.0
 //    circleView.layer.shadowRadius = 4
 //    circleView.layer.shadowOpacity = 0.5
 //    circleView.layer.shadowColor = UIColor.blueColor().CGColor
@@ -60,36 +69,38 @@ class ViewController: UIViewController {
     swipeUp.direction = .Up
     swipeDown.direction = .Down
 
-    view.addGestureRecognizer(swipeUp)
-    view.addGestureRecognizer(swipeDown)
+    circleView.addGestureRecognizer(swipeUp)
+    circleView.addGestureRecognizer(swipeDown)
 
 
   }
 
   func handleSwipes(sender:UISwipeGestureRecognizer) {
-    var increment: Int
-    var offset: CGFloat
+    var increment: Int = 1
+    var offset: CGFloat = 10
+
 
     // up or down
-    if sender.direction == .Up {
+    if sender.direction == .Down && score == 0  {
+      increment = 0
+      offset = -10
+
+    } else if sender.direction == .Up  {
+
       increment = 1
       offset = 10
-      print(offset)
-//      label.center = CGPoint(x: label.center.x, y: label.center.y + offset)
+      print("offset up :\(offset)")
+      //label.center = CGPoint(x: label.center.x, y: label.center.y + offset)
 
-
-    } else {
+    } else if  sender.direction == .Down  {
       increment = -1
       offset = -10
-      print(offset)
-//      label.center = CGPoint(x: label.center.x, y: label.center.y + offset)
-
+      print("offset down :\(offset)")
+      //label.center = CGPoint(x: label.center.x, y: label.center.y + offset)
 
     }
 
     //let shadowAnimate = CABasicAnimation(keyPath:"shadowOpacity")
-
-
     // animate stuff with constraints
     inc(increment)
 
@@ -97,11 +108,12 @@ class ViewController: UIViewController {
       self.labelYConstraint.constant = offset
       self.view.layoutIfNeeded()
 
-      self.circleView.layer.shadowRadius = 4
-      self.circleView.layer.shadowOpacity = 0.8
-      self.circleView.layer.shadowColor = UIColor.blueColor().CGColor
+      //self.circleView.layer.shadowRadius = 4
+      self.circleView.layer.shadowOpacity = 1
+      //self.circleView.layer.shadowColor = UIColor(red: 167/255.0, green: 246/255.0, blue: 67/255.0, alpha: 1).CGColor
+      self.circleView.layer.backgroundColor = UIColor(red: 167/255.0, green: 246/255.0, blue: 67/255.0, alpha: 1).CGColor
       self.circleView.layer.shadowOffset = CGSize.zero
-      self.label.textColor = UIColor.blueColor()
+      //self.label.textColor = UIColor.blueColor()
       }) { _ in
 
         UIView.animateWithDuration(0.2, animations: { _ in
@@ -110,7 +122,9 @@ class ViewController: UIViewController {
           self.circleView.layer.shadowRadius = 1
           self.circleView.layer.shadowOpacity = 0.1
           self.circleView.layer.shadowColor = UIColor.clearColor().CGColor
-          self.label.textColor = UIColor.blackColor()
+          self.circleView.layer.backgroundColor = UIColor(red: 211/255.0, green: 211/255.0, blue: 211/255.0, alpha: 0.3).CGColor
+
+          //self.label.textColor = UIColor.blackColor()
         })
     }
   }
