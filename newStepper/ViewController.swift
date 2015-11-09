@@ -26,6 +26,15 @@ class ViewController: UIViewController {
     )
   }
 
+  override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+
+  }
+
+  override func viewDidAppear(animated: Bool) {
+    super.viewDidAppear(animated)
+
+  }
 
   @IBInspectable var min: Int = 0
   @IBInspectable var max: Int = 20
@@ -53,13 +62,10 @@ class ViewController: UIViewController {
     super.viewDidLoad()
     label.font = UIFont(name:"Futura-Medium", size: 44.0)
     setupSwipeGestures()
+    setupTapGesture()
 
     circleView.layer.cornerRadius = CGRectGetHeight(circleView.bounds) / 2.0
     circleView.layer.borderColor = UIColor.lightGrayColor().CGColor
-//    circleView.layer.borderWidth = 9.0
-//    circleView.layer.shadowRadius = 4
-//    circleView.layer.shadowOpacity = 0.5
-//    circleView.layer.shadowColor = UIColor.blueColor().CGColor
   }
 
   private func setupSwipeGestures() {
@@ -72,6 +78,24 @@ class ViewController: UIViewController {
     circleView.addGestureRecognizer(swipeUp)
     circleView.addGestureRecognizer(swipeDown)
 
+
+  }
+
+  private func setupTapGesture(){
+    let tapped = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
+    circleView.addGestureRecognizer(tapped)
+  }
+
+  // start animation of circle view when view is tapped
+
+  func handleTap(sender: UITapGestureRecognizer) {
+    UIView.animateWithDuration(1.0, delay: 0.0, options: [  .AllowUserInteraction , .CurveEaseInOut ] , animations: {
+      self.circleView.transform = CGAffineTransformMakeScale(1.3, 1.3)
+      },completion:nil)
+
+    UIView.animateWithDuration(1.0, delay: 1, options: [  .AllowUserInteraction , .CurveEaseInOut ] , animations: {
+      self.circleView.transform = CGAffineTransformMakeScale(1, 1)
+      },completion:nil)
 
   }
 
