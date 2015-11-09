@@ -13,18 +13,25 @@ import QuartzCore
 
 class ViewController: UIViewController {
 
+  // IBActions
+  @IBAction func buttonUp(sender: AnyObject) {
+    inc(1)
+  }
+
+
+  @IBAction func buttonDown(sender: AnyObject) {
+    if score == 0 {
+      score = 0
+    } else {
+      inc(-1)
+    }
+  }
+
   // the view underneath the number
 
   @IBOutlet weak var circleView: UIView!
-
-  struct Colors {
-    static let jogaGreen = UIColor(
-      red: 167/255.0,
-      green: 246/255.0,
-      blue: 67/255.0,
-      alpha: 1
-    )
-  }
+  @IBOutlet weak var arrowUp: UIButton!
+  @IBOutlet weak var arrowDown: UIButton!
 
   override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
@@ -38,6 +45,10 @@ class ViewController: UIViewController {
 
   @IBInspectable var min: Int = 0
   @IBInspectable var max: Int = 20
+
+  var increment: Int = 1
+  var offset: CGFloat = 10
+
 
   // MARK : IBOutlet
 
@@ -55,12 +66,23 @@ class ViewController: UIViewController {
   }
 
   private func inc(n: Int) {
-    score = score + n
+
+      score = score + n
+  }
+  private func dec(n: Int) {
+    if score == 0 {
+      score = 0}
+    else {
+      score = score - n
+    }
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
     label.font = UIFont(name:"Futura-Medium", size: 44.0)
+    arrowDown.alpha = 0
+    arrowUp.alpha = 0
+
     setupSwipeGestures()
     setupTapGesture()
 
@@ -89,19 +111,21 @@ class ViewController: UIViewController {
   // start animation of circle view when view is tapped
 
   func handleTap(sender: UITapGestureRecognizer) {
-    UIView.animateWithDuration(1.0, delay: 0.0, options: [  .AllowUserInteraction , .CurveEaseInOut ] , animations: {
-      self.circleView.transform = CGAffineTransformMakeScale(1.3, 1.3)
+    UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0.4, options: [.AllowUserInteraction , .CurveEaseInOut ], animations: {
+//    UIView.animateWithDuration(0.5, delay: 0.0, options: [  .AllowUserInteraction , .CurveEaseInOut  ] , animations: {
+      self.circleView.transform = CGAffineTransformMakeScale(1.2, 1.2)
+      self.circleView.layer.backgroundColor = UIColor(red: 167/255.0, green: 246/255.0, blue: 67/255.0, alpha: 1).CGColor
+      self.arrowDown.alpha = 1
+      self.arrowUp.alpha = 1
       },completion:nil)
 
-    UIView.animateWithDuration(1.0, delay: 1, options: [  .AllowUserInteraction , .CurveEaseInOut ] , animations: {
-      self.circleView.transform = CGAffineTransformMakeScale(1, 1)
-      },completion:nil)
+//    UIView.animateWithDuration(0.7, delay: 0.7, options: [  .AllowUserInteraction , .CurveEaseInOut ] , animations: {
+//      self.circleView.transform = CGAffineTransformMakeScale(1, 1)
+//      },completion:nil)
 
   }
 
   func handleSwipes(sender:UISwipeGestureRecognizer) {
-    var increment: Int = 1
-    var offset: CGFloat = 10
 
 
     // up or down
@@ -114,7 +138,7 @@ class ViewController: UIViewController {
       increment = 1
       offset = 10
       print("offset up :\(offset)")
-      //label.center = CGPoint(x: label.center.x, y: label.center.y + offset)
+      //label.center = CGPoint(x: label.center.x , y: label.center.y + offset)
 
     } else if  sender.direction == .Down  {
       increment = -1
@@ -129,7 +153,7 @@ class ViewController: UIViewController {
     inc(increment)
 
     UIView.animateWithDuration(0.2, animations: { _ in
-      self.labelYConstraint.constant = offset
+      self.labelYConstraint.constant = self.offset
       self.view.layoutIfNeeded()
 
       //self.circleView.layer.shadowRadius = 4
@@ -146,7 +170,7 @@ class ViewController: UIViewController {
           self.circleView.layer.shadowRadius = 1
           self.circleView.layer.shadowOpacity = 0.1
           self.circleView.layer.shadowColor = UIColor.clearColor().CGColor
-          self.circleView.layer.backgroundColor = UIColor(red: 211/255.0, green: 211/255.0, blue: 211/255.0, alpha: 0.3).CGColor
+          //self.circleView.layer.backgroundColor = UIColor(red: 211/255.0, green: 211/255.0, blue: 211/255.0, alpha: 0.3).CGColor
 
           //self.label.textColor = UIColor.blackColor()
         })
