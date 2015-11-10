@@ -84,7 +84,9 @@ class ViewController: UIViewController {
     arrowUp.alpha = 0
 
     setupSwipeGestures()
+    setupPanGestures()
     setupTapGesture()
+
 
     circleView.layer.cornerRadius = CGRectGetHeight(circleView.bounds) / 2.0
     circleView.layer.borderColor = UIColor.lightGrayColor().CGColor
@@ -107,6 +109,39 @@ class ViewController: UIViewController {
     let tapped = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
     circleView.addGestureRecognizer(tapped)
   }
+
+
+  // add a pan gesture recognizer 
+
+  private func setupPanGestures() {
+    let panGesture = UIPanGestureRecognizer(target: self, action: Selector("handleThePan:"))
+
+    circleView.addGestureRecognizer(panGesture)
+
+
+
+  }
+
+  func handleThePan(sender: UIPanGestureRecognizer) -> Void {
+
+    if sender.isDown(circleView) == true {
+      if score == 0 {
+        score = 0
+      } else {
+        inc(-1)
+      }
+    } else {
+      inc(+1)
+    }
+  }
+
+
+  // both pan anf swipe at the same time
+
+//  func gestureRecognizer(UIPanGestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer UISwipeGestureRecognizer: UIGestureRecognizer) -> Bool {
+//    return true
+//  }
+
 
   // start animation of circle view when view is tapped
 
@@ -174,6 +209,22 @@ class ViewController: UIViewController {
 
           //self.label.textColor = UIColor.blackColor()
         })
+    }
+  }
+}
+
+
+
+extension UIPanGestureRecognizer {
+
+  func isDown(circleView: UIView) -> Bool {
+    let velocity : CGPoint = velocityInView(circleView)
+    if velocity.y < 0 {
+      print("ex Gesture went up")
+      return false
+    } else {
+      print("ex Gesture went down")
+      return true
     }
   }
 }
