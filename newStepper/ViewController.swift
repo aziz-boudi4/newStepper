@@ -124,7 +124,7 @@ class ViewController: UIViewController {
     circleView.addGestureRecognizer(panGesture)
   }
 
-  // the handlers
+
   // speed of the pan gesture
   private struct Constants {
     static let GoalGestureScale :CGFloat = 8
@@ -134,6 +134,7 @@ class ViewController: UIViewController {
     switch sender.state {
     case .Ended: fallthrough
     case .Changed:
+      self.circleView.layer.backgroundColor = UIColor(red: 167/255.0, green: 246/255.0, blue: 67/255.0, alpha: 1).CGColor
       let translation = sender.translationInView(circleView)
       let goalChange = -Int(translation.y / Constants.GoalGestureScale)
       if goalChange != 0 {
@@ -191,6 +192,9 @@ class ViewController: UIViewController {
     UIView.animateWithDuration(0.2, animations: { _ in
       self.labelYConstraint.constant = self.offset
       self.view.layoutIfNeeded()
+      self.label.alpha = 1
+      self.buttonUp.alpha = 0
+      self.buttonDown.alpha = 0
       self.circleView.layer.backgroundColor = UIColor(red: 167/255.0, green: 246/255.0, blue: 67/255.0, alpha: 1).CGColor
       }) { _ in
 
