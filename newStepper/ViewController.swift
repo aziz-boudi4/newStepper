@@ -29,21 +29,13 @@ class ViewController: UIViewController {
     }
   }
 
-  // the view underneath the number
 
   @IBOutlet weak var circleView: UIView!
   @IBOutlet weak var arrowUp: UIButton!
   @IBOutlet weak var arrowDown: UIButton!
+  @IBOutlet weak var buttonUp: UIButton! // buttons in the center that disapears
+  @IBOutlet weak var buttonDown: UIButton!
 
-  override func viewWillAppear(animated: Bool) {
-    super.viewWillAppear(animated)
-
-  }
-
-  override func viewDidAppear(animated: Bool) {
-    super.viewDidAppear(animated)
-
-  }
 
   @IBInspectable var min: Int = 0
   @IBInspectable var max: Int = 20
@@ -63,7 +55,9 @@ class ViewController: UIViewController {
       return 0
     }
     set {
-      label.text = newValue.description
+      if newValue >= Int(min) && newValue <= Int(max){
+        label.text = newValue.description
+      }
     }
   }
 
@@ -76,6 +70,7 @@ class ViewController: UIViewController {
     label.font = UIFont(name:"Futura-Medium", size: 44.0)
     arrowDown.alpha = 0
     arrowUp.alpha = 0
+    label.alpha = 0
 
     let swipeGestures = setupSwipeGestures()
     setupPanGestures(swipeGestures)
@@ -97,8 +92,6 @@ class ViewController: UIViewController {
     circleView.addGestureRecognizer(swipeDown)
 
     return [swipeUp, swipeDown]
-
-
   }
 
   private func setupTapGesture(){
@@ -106,46 +99,73 @@ class ViewController: UIViewController {
     circleView.addGestureRecognizer(tapped)
   }
 
+  // Tap outside of the view
+  @IBAction func setupOutsideTapGesture(sender: UITapGestureRecognizer) {
+    print("tapped outside")
+    UIView.animateWithDuration(0.1, delay: 0, options: [  .AllowUserInteraction , .CurveEaseInOut ] , animations: {
+    self.circleView.transform = CGAffineTransformMakeScale(1, 1)
+    self.circleView.layer.backgroundColor = UIColor(red: 211/255.0, green: 211/255.0, blue: 211/255.0, alpha: 0.3).CGColor
+    self.arrowDown.alpha = 0
+    self.arrowUp.alpha = 0
 
-  // add a pan gesture recognizer for multiple goals
+
+    },completion:nil)
+
+  }
+
+
+  // add a pan gesture recognizer for multiple goals 
+  // swipe gesture as a parameter in order to cancel if it fails
 
   private func setupPanGestures(swipeGestures: [UISwipeGestureRecognizer]) {
     let panGesture = UIPanGestureRecognizer(target: self, action: Selector("handleThePan:"))
     for swipeGesture in swipeGestures {
        panGesture.requireGestureRecognizerToFail(swipeGesture)
     }
-
     circleView.addGestureRecognizer(panGesture)
   }
 
-  func handleThePan(sender: UIPanGestureRecognizer) -> Void {
+  // the handlers
 
-    if sender.isDown(circleView) == true {
-      if score == 0 {
-         score = 0
-      } else {
-         inc(-1)
-        }
-    } else {
-         inc(+1)
+
+  // speed of the pan gesture
+  private struct Constants {
+    static let GoalGestureScale :CGFloat = 8
+  }
+
+  func handleThePan(sender: UIPanGestureRecognizer) -> Void {
+    switch sender.state {
+    case .Ended: fallthrough
+    case .Changed:
+      let translation = sender.translationInView(circleView)
+      let goalChange = -Int(translation.y / Constants.GoalGestureScale)
+      if goalChange != 0 {
+        score += goalChange
+        sender.setTranslation(CGPointZero, inView: circleView)
+      }
+    default: break
     }
   }
+
 
 
   // start animation of circle view when view is tapped
 
   func handleTap(sender: UITapGestureRecognizer) {
-    UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0.4, options: [.AllowUserInteraction , .CurveEaseInOut ], animations: {
+    circleView.layer.backgroundColor = UIColor(red: 167/255.0, green: 246/255.0, blue: 67/255.0, alpha: 1).CGColor
+    UIView.animateWithDuration(0.8, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.4, options: [.AllowUserInteraction , .CurveEaseInOut ], animations: {
       self.circleView.transform = CGAffineTransformMakeScale(1.2, 1.2)
-      self.circleView.layer.backgroundColor = UIColor(red: 167/255.0, green: 246/255.0, blue: 67/255.0, alpha: 1).CGColor
-      self.arrowDown.alpha = 1
-      self.arrowUp.alpha = 1
+      self.buttonUp.alpha = 0
+      self.buttonDown.alpha = 0
+      self.buttonUp.center.y = 10
+      self.buttonDown.center.y = 85
       },completion:nil)
 
-// Uncomment if you want the view to scale down after being tapped.
-//    UIView.animateWithDuration(0.7, delay: 0.7, options: [  .AllowUserInteraction , .CurveEaseInOut ] , animations: {
-//      self.circleView.transform = CGAffineTransformMakeScale(1, 1)
-//      },completion:nil)
+    UIView.animateWithDuration(0.6, delay: 0, options: [  .AllowUserInteraction , .CurveEaseInOut ] , animations: {
+        self.arrowDown.alpha = 1
+        self.arrowUp.alpha = 1
+        self.label.alpha = 1
+      },completion:nil)
 
   }
 
@@ -157,18 +177,14 @@ class ViewController: UIViewController {
       offset = -10
 
     } else if sender.direction == .Up  {
-
       increment = 1
       offset = 10
       print("offset up :\(offset)")
-      // move the number too
-      //label.center = CGPoint(x: label.center.x , y: label.center.y + offset)
 
     } else if  sender.direction == .Down  {
       increment = -1
       offset = -10
       print("offset down :\(offset)")
-      //label.center = CGPoint(x: label.center.x, y: label.center.y + offset)
 
     }
 
@@ -178,16 +194,12 @@ class ViewController: UIViewController {
     UIView.animateWithDuration(0.2, animations: { _ in
       self.labelYConstraint.constant = self.offset
       self.view.layoutIfNeeded()
-      self.circleView.layer.shadowOpacity = 1
       self.circleView.layer.backgroundColor = UIColor(red: 167/255.0, green: 246/255.0, blue: 67/255.0, alpha: 1).CGColor
-      self.circleView.layer.shadowOffset = CGSize.zero
       }) { _ in
 
         UIView.animateWithDuration(0.2, animations: { _ in
           self.labelYConstraint.constant = 0
           self.view.layoutIfNeeded()
-          self.circleView.layer.shadowRadius = 1
-          self.circleView.layer.shadowOpacity = 0.1
           self.circleView.layer.shadowColor = UIColor.clearColor().CGColor
         })
     }
@@ -196,17 +208,19 @@ class ViewController: UIViewController {
 
 
 
-extension UIPanGestureRecognizer {
+//extension UIPanGestureRecognizer {
+//
+//  func isDown(circleView: UIView) -> Bool {
+//    let velocity : CGPoint = velocityInView(circleView)
+//    if velocity.y < 0  {
+//      print("Gesture went up")
+//      return false
+//    } else {
+//      print("Gesture went down")
+//      return true
+//    }
+//  }
+//}
 
-  func isDown(circleView: UIView) -> Bool {
-    let velocity : CGPoint = velocityInView(circleView)
-    if velocity.y < 0 {
-      print("ex Gesture went up")
-      return false
-    } else {
-      print("ex Gesture went down")
-      return true
-    }
-  }
-}
+
 

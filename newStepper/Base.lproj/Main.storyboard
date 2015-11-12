@@ -26,9 +26,9 @@
                                 <rect key="frame" x="138" y="284" width="100" height="100"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eTX-VI-NJf">
-                                        <rect key="frame" x="42" y="78" width="16" height="22"/>
+                                        <rect key="frame" x="42" y="74" width="16" height="22"/>
                                         <animations/>
-                                        <state key="normal" image="downArrowGr">
+                                        <state key="normal" image="downArrowWhite">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -37,13 +37,23 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3lZ-SA-9ZR">
-                                        <rect key="frame" x="42" y="0.0" width="16" height="23"/>
+                                        <rect key="frame" x="42" y="4" width="16" height="23"/>
                                         <animations/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <state key="normal" image="upArrowGr"/>
+                                        <state key="normal" image="upArrowWhite"/>
                                         <connections>
                                             <action selector="buttonUp:" destination="BYZ-38-t0r" eventType="touchUpInside" id="MLL-Io-fUl"/>
                                         </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SJI-mE-Nlb" userLabel="buttonUp">
+                                        <rect key="frame" x="42" y="30" width="16" height="22"/>
+                                        <animations/>
+                                        <state key="normal" image="upArrowWhite"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HCM-Xa-VJk" userLabel="buttonDown">
+                                        <rect key="frame" x="42" y="52" width="16" height="22"/>
+                                        <animations/>
+                                        <state key="normal" image="downArrowWhite"/>
                                     </button>
                                 </subviews>
                                 <animations/>
@@ -62,34 +72,46 @@
                                 <fontDescription key="fontDescription" name="FuturistFixedWidth-Regular" family="Futurist Fixed-width" pointSize="34"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
+                                <size key="shadowOffset" width="0.0" height="0.0"/>
                             </label>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" red="0.20392156862745098" green="0.20392156862745098" blue="0.34509803921568627" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="aPp-wV-R0b" firstAttribute="centerX" secondItem="ZaA-jC-g8l" secondAttribute="centerX" id="2sk-Fj-TLM"/>
                             <constraint firstAttribute="centerX" secondItem="ZaA-jC-g8l" secondAttribute="centerX" id="QZm-aJ-brp"/>
                             <constraint firstItem="aPp-wV-R0b" firstAttribute="centerY" secondItem="ZaA-jC-g8l" secondAttribute="centerY" id="eqd-Af-naw"/>
                             <constraint firstAttribute="centerY" secondItem="ZaA-jC-g8l" secondAttribute="centerY" id="y93-4r-joN"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="GVr-5s-5XM" appends="YES" id="ALa-AI-4B8"/>
+                        </connections>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="arrowDown" destination="eTX-VI-NJf" id="NCo-53-CAi"/>
                         <outlet property="arrowUp" destination="3lZ-SA-9ZR" id="5BO-cC-qee"/>
+                        <outlet property="buttonDown" destination="HCM-Xa-VJk" id="C8U-tT-KhE"/>
+                        <outlet property="buttonUp" destination="SJI-mE-Nlb" id="Nem-3I-ddg"/>
                         <outlet property="circleView" destination="ZaA-jC-g8l" id="OKI-fu-sDP"/>
                         <outlet property="label" destination="aPp-wV-R0b" id="F7l-RM-g0e"/>
                         <outlet property="labelYConstraint" destination="y93-4r-joN" id="2IS-3c-VZw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="GVr-5s-5XM">
+                    <connections>
+                        <action selector="setupOutsideTapGesture:" destination="BYZ-38-t0r" id="BfE-fN-eaW"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="214.5" y="269.5"/>
         </scene>
     </scenes>
     <resources>
-        <image name="downArrowGr" width="16" height="16"/>
-        <image name="upArrowGr" width="16" height="16"/>
+        <image name="downArrowWhite" width="16" height="16"/>
+        <image name="upArrowWhite" width="16" height="16"/>
     </resources>
 </document>
