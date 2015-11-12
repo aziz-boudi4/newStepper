@@ -101,7 +101,6 @@ class ViewController: UIViewController {
 
   // Tap outside of the view
   @IBAction func setupOutsideTapGesture(sender: UITapGestureRecognizer) {
-    print("tapped outside")
     UIView.animateWithDuration(0.1, delay: 0, options: [  .AllowUserInteraction , .CurveEaseInOut ] , animations: {
     self.circleView.transform = CGAffineTransformMakeScale(1, 1)
     self.circleView.layer.backgroundColor = UIColor(red: 211/255.0, green: 211/255.0, blue: 211/255.0, alpha: 0.3).CGColor
@@ -126,8 +125,6 @@ class ViewController: UIViewController {
   }
 
   // the handlers
-
-
   // speed of the pan gesture
   private struct Constants {
     static let GoalGestureScale :CGFloat = 8
@@ -206,21 +203,6 @@ class ViewController: UIViewController {
   }
 }
 
-
-
-//extension UIPanGestureRecognizer {
-//
-//  func isDown(circleView: UIView) -> Bool {
-//    let velocity : CGPoint = velocityInView(circleView)
-//    if velocity.y < 0  {
-//      print("Gesture went up")
-//      return false
-//    } else {
-//      print("Gesture went down")
-//      return true
-//    }
-//  }
-//}
 
 
 
