@@ -25,19 +25,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZaA-jC-g8l" userLabel="circleView">
                                 <rect key="frame" x="138" y="284" width="100" height="100"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eTX-VI-NJf">
-                                        <rect key="frame" x="42" y="74" width="16" height="22"/>
-                                        <animations/>
-                                        <state key="normal" image="downArrowWhite">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <color key="titleShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="buttonDown:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xpX-cL-teA"/>
-                                        </connections>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3lZ-SA-9ZR">
-                                        <rect key="frame" x="42" y="4" width="16" height="23"/>
+                                        <rect key="frame" x="29" y="4" width="43" height="26"/>
                                         <animations/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <state key="normal" image="upArrowWhite"/>
@@ -55,13 +44,28 @@
                                         <animations/>
                                         <state key="normal" image="downArrowWhite"/>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eTX-VI-NJf">
+                                        <rect key="frame" x="29" y="74" width="43" height="26"/>
+                                        <animations/>
+                                        <state key="normal" image="downArrowWhite">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="buttonDown:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xpX-cL-teA"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <animations/>
                                 <color key="backgroundColor" red="0.82745098039215681" green="0.82745098039215681" blue="0.82745098039215681" alpha="0.2955927958015267" colorSpace="calibratedRGB"/>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="100" id="DlW-Iv-huT"/>
                                     <constraint firstAttribute="height" constant="100" id="O5W-dk-JEY"/>
                                 </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="NW9-LV-6H5" appends="YES" id="v6Q-rn-yik"/>
+                                </connections>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aPp-wV-R0b" userLabel="value">
                                 <rect key="frame" x="138" y="314" width="100" height="40"/>
@@ -98,6 +102,7 @@
                         <outlet property="circleView" destination="ZaA-jC-g8l" id="OKI-fu-sDP"/>
                         <outlet property="label" destination="aPp-wV-R0b" id="F7l-RM-g0e"/>
                         <outlet property="labelYConstraint" destination="y93-4r-joN" id="2IS-3c-VZw"/>
+                        <outlet property="panGesture" destination="NW9-LV-6H5" id="UFd-oG-NvN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -106,6 +111,11 @@
                         <action selector="setupOutsideTapGesture:" destination="BYZ-38-t0r" id="BfE-fN-eaW"/>
                     </connections>
                 </tapGestureRecognizer>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="NW9-LV-6H5">
+                    <connections>
+                        <action selector="setupPanGesture:" destination="BYZ-38-t0r" id="zsQ-mA-OlD"/>
+                    </connections>
+                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="214.5" y="269.5"/>
         </scene>
