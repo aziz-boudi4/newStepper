@@ -13,7 +13,7 @@ import QuartzCore
 
 
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UIGestureRecognizerDelegate {
 
   // IBActions arrows
   @IBAction func buttonUp(sender: AnyObject) {
@@ -35,7 +35,7 @@ class ViewController: UIViewController {
   @IBOutlet weak var arrowDown: UIButton!
   @IBOutlet weak var buttonUp: UIButton!   // Buttons in the center that disapear
   @IBOutlet weak var buttonDown: UIButton! //
-  var buttonState: Bool = true
+  var buttonState: Bool = true             // enlarge(false) && shrink(true)
 
 
   @IBInspectable var min: Int = 0
@@ -80,7 +80,7 @@ class ViewController: UIViewController {
     circleView.layer.borderColor = UIColor.lightGrayColor().CGColor
   }
 
-  private func setupSwipeGestures() -> [UISwipeGestureRecognizer] {
+  private func setupSwipeGestures() {
     let swipeUp = UISwipeGestureRecognizer(target: self, action: Selector("handleSwipes:"))
     let swipeDown = UISwipeGestureRecognizer(target: self, action: Selector("handleSwipes:"))
 
@@ -90,9 +90,7 @@ class ViewController: UIViewController {
     circleView.addGestureRecognizer(swipeUp)
     circleView.addGestureRecognizer(swipeDown)
 
-
-    return [swipeUp, swipeDown]
-  }
+}
 
   private func setupTapGesture(){
     let tapped = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
@@ -128,42 +126,49 @@ class ViewController: UIViewController {
     }
   }
 
-
-
-  func enlarge() {
-    self.circleView.transform = CGAffineTransformMakeScale(1.2, 1.2)
-    self.buttonState = false
-    panGesture.enabled = true
+  func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    let translation = panGesture.translationInView(circleView)
+    if -Int(translation.y) >= 2  || -Int(translation.y) <= -2 {
+      panGesture.enabled = false
+      return true
+    } else {
+      panGesture.enabled = true
+      return false
+    }
 
   }
 
-  func shrink() {
-    self.circleView.layer.backgroundColor = UIColor(red: 211/255.0, green: 211/255.0, blue: 211/255.0, alpha: 0.3).CGColor
-    self.arrowDown.alpha = 0
-    self.arrowUp.alpha = 0
-    self.circleView.transform = CGAffineTransformMakeScale(1, 1)
-    buttonState = true
-    panGesture.enabled = false
 
+  func enlarge() {
+    circleView.transform = CGAffineTransformMakeScale(1.2, 1.2)
+    buttonState = false
+    panGesture.enabled = true
+  }
+
+  func shrink() {
+    circleView.layer.backgroundColor = UIColor(red: 211/255.0, green: 211/255.0, blue: 211/255.0, alpha: 0.3).CGColor
+    circleView.transform = CGAffineTransformMakeScale(1, 1)
+    panGesture.enabled = false
+    arrowDown.alpha = 0
+    arrowUp.alpha = 0
+    buttonState = true
   }
 
 
   // Toggle animation ( active and inactive mode )
-
   func handleTap(sender: UITapGestureRecognizer) {
     circleView.layer.backgroundColor = UIColor(red: 167/255.0, green: 246/255.0, blue: 67/255.0, alpha: 1).CGColor
     UIView.animateWithDuration(0.8, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.4, options: [.AllowUserInteraction , .CurveEaseInOut ], animations: {
-
       self.buttonState ? self.enlarge() : self.shrink()
       self.buttonUp.alpha = 0
       self.buttonDown.alpha = 0
       self.buttonUp.center.y = 10
       self.buttonDown.center.y = 85
-      
+
       },completion:nil)
 
     UIView.animateWithDuration(0.6, delay: 0, options: [  .AllowUserInteraction , .CurveEaseInOut ] , animations: {
-      if !self.buttonState{
+      if !self.buttonState {
           self.arrowDown.alpha = 1
           self.arrowUp.alpha = 1
           self.label.alpha = 1
@@ -175,15 +180,13 @@ class ViewController: UIViewController {
   func handleSwipes(sender:UISwipeGestureRecognizer) {
 
     // up or down
-    if sender.direction == .Down && score == 0  {
+    if sender.direction == .Down && score == 0 {
       increment = 0
       offset = -10
-
-    } else if sender.direction == .Up  {
+    } else if sender.direction == .Up {
       increment = 1
       offset = 10
-
-    } else if  sender.direction == .Down  {
+    } else if  sender.direction == .Down {
       increment = -1
       offset = -10
     }
