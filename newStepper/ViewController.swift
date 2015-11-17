@@ -90,19 +90,18 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     circleView.addGestureRecognizer(swipeUp)
     circleView.addGestureRecognizer(swipeDown)
 
-}
+  }
 
   private func setupTapGesture(){
     let tapped = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
     circleView.addGestureRecognizer(tapped)
-    
   }
 
   // Tap outside of the view
   @IBAction func setupOutsideTapGesture(sender: UITapGestureRecognizer) {
     UIView.animateWithDuration(0.1, delay: 0, options: [  .AllowUserInteraction , .CurveEaseInOut ] , animations: {
-    self.shrink()
-    },completion:nil)
+      self.shrink()
+      }, completion:nil)
   }
 
   // speed of the pan gesture
@@ -131,6 +130,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     let translation = panGesture.translationInView(circleView)
     if -Int(translation.y) >= 2  || -Int(translation.y) <= -2 {
       panGesture.enabled = false
+      panGesture.enabled = true
       panGesture.setTranslation(CGPointZero, inView: circleView)
       return true
     } else  {
@@ -140,7 +140,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
 
 
   }
-
 
 
   func enlarge() {
@@ -169,15 +168,15 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
       self.buttonUp.center.y = 10
       self.buttonDown.center.y = 85
 
-      },completion:nil)
+      }, completion:nil)
 
     UIView.animateWithDuration(0.6, delay: 0, options: [  .AllowUserInteraction , .CurveEaseInOut ] , animations: {
       if !self.buttonState {
-          self.arrowDown.alpha = 1
-          self.arrowUp.alpha = 1
-          self.label.alpha = 1
+        self.arrowDown.alpha = 1
+        self.arrowUp.alpha = 1
+        self.label.alpha = 1
         }
-      },completion:nil)
+      }, completion:nil)
 
   }
 
@@ -214,7 +213,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
           self.circleView.layer.shadowColor = UIColor.clearColor().CGColor
           self.circleView.layer.backgroundColor = UIColor(red: 211/255.0, green: 211/255.0, blue: 211/255.0, alpha: 0.3).CGColor
           self.label.textColor = UIColor.whiteColor()
-
+          
         })
     }
   }
