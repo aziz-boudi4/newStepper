@@ -35,8 +35,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
   @IBOutlet weak var arrowDown: UIButton!
   @IBOutlet weak var buttonUp: UIButton!   // Buttons in the center that disapear
   @IBOutlet weak var buttonDown: UIButton! //
-  var buttonState: Bool = true             // enlarge(false) && shrink(true)
-
+  var buttonState = true                   // enlarge(false) && shrink(true)
 
   @IBInspectable var min: Int = 0
   @IBInspectable var max: Int = 20
@@ -75,6 +74,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     panGesture.enabled = false
     setupSwipeGestures()
     setupTapGesture()
+
 
     circleView.layer.cornerRadius = CGRectGetHeight(circleView.bounds) / 2.0
     circleView.layer.borderColor = UIColor.lightGrayColor().CGColor
@@ -126,17 +126,21 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     }
   }
 
+
   func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
     let translation = panGesture.translationInView(circleView)
     if -Int(translation.y) >= 2  || -Int(translation.y) <= -2 {
       panGesture.enabled = false
+      panGesture.setTranslation(CGPointZero, inView: circleView)
       return true
-    } else {
+    } else  {
       panGesture.enabled = true
       return false
     }
 
+
   }
+
 
 
   func enlarge() {
