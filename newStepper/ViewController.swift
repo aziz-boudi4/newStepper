@@ -33,12 +33,16 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
   @IBOutlet weak var circleView: UIView!
   @IBOutlet weak var arrowUp: UIButton!
   @IBOutlet weak var arrowDown: UIButton!
-  @IBOutlet weak var buttonUp: UIButton!   // Buttons in the center that disapear
-  @IBOutlet weak var buttonDown: UIButton! //
-  var buttonState = true                   // enlarge(false) && shrink(true)
+  @IBOutlet weak var buttonUpConstraint: NSLayoutConstraint!
+  @IBOutlet weak var buttonDownConstraint: NSLayoutConstraint!
+  @IBOutlet weak var labelYConstraint: NSLayoutConstraint!
+  @IBOutlet weak var label: UILabel!
 
   @IBInspectable var min: Int = 0
   @IBInspectable var max: Int = 20
+
+  var buttonState = true  // enlarge(false) && shrink(true)
+  var firstTap = true
 
   var increment: Int = 1
   var offset: CGFloat = 10
@@ -46,8 +50,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
 
   // MARK : IBOutlet
 
-  @IBOutlet weak var label: UILabel!
-  @IBOutlet weak var labelYConstraint: NSLayoutConstraint!
+
 
   var score: Int {
     get {
@@ -68,13 +71,13 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
   override func viewDidLoad() {
     super.viewDidLoad()
     label.font = UIFont(name:"Futura-Medium", size: 44.0)
-    arrowDown.alpha = 0
-    arrowUp.alpha = 0
+    arrowDown.alpha = 1
+    arrowUp.alpha = 1
     label.alpha = 0
     panGesture.enabled = false
     setupSwipeGestures()
     setupTapGesture()
-
+    firstTap = true
 
     circleView.layer.cornerRadius = CGRectGetHeight(circleView.bounds) / 2.0
     circleView.layer.borderColor = UIColor.lightGrayColor().CGColor
@@ -100,7 +103,13 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
   // Tap outside of the view
   @IBAction func setupOutsideTapGesture(sender: UITapGestureRecognizer) {
     UIView.animateWithDuration(0.1, delay: 0, options: [  .AllowUserInteraction , .CurveEaseInOut ] , animations: {
-      self.shrink()
+      if self.firstTap && self.buttonState == true {
+        self.arrowUp.alpha = 1
+        self.arrowDown.alpha = 1
+      } else {
+        self.shrink()
+      }
+
       }, completion:nil)
   }
 
@@ -144,6 +153,10 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
 
   func enlarge() {
     circleView.transform = CGAffineTransformMakeScale(1.2, 1.2)
+    buttonDownConstraint.constant = 4
+    buttonUpConstraint.constant = 4
+    arrowUp.alpha = 0
+    arrowDown.alpha = 0
     buttonState = false
     panGesture.enabled = true
   }
@@ -151,9 +164,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
   func shrink() {
     circleView.layer.backgroundColor = UIColor(red: 211/255.0, green: 211/255.0, blue: 211/255.0, alpha: 0.3).CGColor
     circleView.transform = CGAffineTransformMakeScale(1, 1)
-    panGesture.enabled = false
-    arrowDown.alpha = 0
     arrowUp.alpha = 0
+    arrowDown.alpha = 0
+    panGesture.enabled = false
     buttonState = true
   }
 
@@ -163,10 +176,12 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     circleView.layer.backgroundColor = UIColor(red: 167/255.0, green: 246/255.0, blue: 67/255.0, alpha: 1).CGColor
     UIView.animateWithDuration(0.8, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.4, options: [.AllowUserInteraction , .CurveEaseInOut ], animations: {
       self.buttonState ? self.enlarge() : self.shrink()
-      self.buttonUp.alpha = 0
-      self.buttonDown.alpha = 0
-      self.buttonUp.center.y = 10
-      self.buttonDown.center.y = 85
+      if self.firstTap == true {
+        self.arrowUp.center.y -= 28.0
+        self.arrowDown.center.y += 28.0
+        self.firstTap = false
+      }
+      self.view.layoutIfNeeded()
 
       }, completion:nil)
 
@@ -175,7 +190,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         self.arrowDown.alpha = 1
         self.arrowUp.alpha = 1
         self.label.alpha = 1
-        }
+      }
       }, completion:nil)
 
   }
@@ -201,8 +216,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
       self.labelYConstraint.constant = self.offset
       self.view.layoutIfNeeded()
       self.label.alpha = 1
-      self.buttonUp.alpha = 0
-      self.buttonDown.alpha = 0
+
       self.label.textColor = UIColor(red: 52/255.0, green: 52/255.0, blue: 88/255.0, alpha: 1)
       self.circleView.layer.backgroundColor = UIColor(red: 167/255.0, green: 246/255.0, blue: 67/255.0, alpha: 1).CGColor
       }) { _ in
