@@ -32,7 +32,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
   @IBOutlet var panGesture: UIPanGestureRecognizer!
   @IBOutlet weak var circleView: UIView!
   @IBOutlet weak var arrowUp: UIButton!
-  @IBOutlet weak var arrowDown: UIButton!
+  @IBOutlet weak var arrowDown: UIButton! 
   @IBOutlet weak var buttonUpConstraint: NSLayoutConstraint!
   @IBOutlet weak var buttonDownConstraint: NSLayoutConstraint!
   @IBOutlet weak var labelYConstraint: NSLayoutConstraint!
@@ -95,7 +95,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
 
   }
 
-  private func setupTapGesture(){
+  private func setupTapGesture(){ // added
     let tapped = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
     circleView.addGestureRecognizer(tapped)
   }
@@ -172,7 +172,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
 
 
   // Toggle animation ( active and inactive mode )
-  func handleTap(sender: UITapGestureRecognizer) {
+  func handleTap(sender: UITapGestureRecognizer) { // added
     circleView.layer.backgroundColor = UIColor(red: 167/255.0, green: 246/255.0, blue: 67/255.0, alpha: 1).CGColor
     UIView.animateWithDuration(0.8, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.4, options: [.AllowUserInteraction , .CurveEaseInOut ], animations: {
       self.buttonState ? self.enlarge() : self.shrink()
@@ -213,12 +213,22 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     inc(increment)
 
     UIView.animateWithDuration(0.18, animations: { _ in
-      self.labelYConstraint.constant = self.offset
-      self.view.layoutIfNeeded()
-      self.label.alpha = 1
-
-      self.label.textColor = UIColor(red: 52/255.0, green: 52/255.0, blue: 88/255.0, alpha: 1)
-      self.circleView.layer.backgroundColor = UIColor(red: 167/255.0, green: 246/255.0, blue: 67/255.0, alpha: 1).CGColor
+      if self.firstTap {
+        self.arrowUp.alpha = 0
+        self.arrowDown.alpha = 0
+        self.labelYConstraint.constant = self.offset
+        self.view.layoutIfNeeded()
+        self.label.alpha = 1
+        self.label.textColor = UIColor(red: 52/255.0, green: 52/255.0, blue: 88/255.0, alpha: 1)
+        self.circleView.layer.backgroundColor = UIColor(red: 167/255.0, green: 246/255.0, blue: 67/255.0, alpha: 1).CGColor
+        self.firstTap = false
+      } else {
+        self.labelYConstraint.constant = self.offset
+        self.view.layoutIfNeeded()
+        self.label.alpha = 1
+        self.label.textColor = UIColor(red: 52/255.0, green: 52/255.0, blue: 88/255.0, alpha: 1)
+        self.circleView.layer.backgroundColor = UIColor(red: 167/255.0, green: 246/255.0, blue: 67/255.0, alpha: 1).CGColor
+      }
       }) { _ in
 
         UIView.animateWithDuration(0.18, animations: { _ in
